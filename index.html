@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div style="padding: 5px;">
+        <p><span style="background-color:#e89d47;color: #e89d47;">aaa</span> Code only works in the browser</p>
+        <p><span style="background-color:#f22121; color: #f22121;">aaa</span> AI produces an error</p>
+    </div>
     <div class="grid-container">
         <div class="grid-item header">Dataset Type</div>
         <div class="grid-item header" style="grid-column: span 3;">Claude</div>
@@ -71,15 +75,15 @@
         <div class="grid-item"><img src="./dataset-video-image/Spatial/claude-london.png" alt="Claude Spatial London" onclick="openModal(this, 'image')"></div>
         <div class="grid-item"><img src="./dataset-video-image/Spatial/claude-nyc.jpeg" alt="Claude Spatial NYC" onclick="openModal(this, 'image')"></div>
         <div class="grid-item"><img src="./dataset-video-image/Spatial/claude-world.png" alt="Claude Spatial World" onclick="openModal(this, 'image')"></div>
-        <div class="grid-item AI-error"><img src="./dataset-video-image/x-512.png" alt="Gemini Spatial London" onclick="openModal(this, 'image')" data-full-image="./dataset-video-image/Spatial/gemini-london.png"></div>
+        <div class="grid-item AI-error"><img src="./dataset-video-image/Spatial/gemini-london.png" alt="Gemini Spatial London" onclick="openModal(this, 'image')" data-full-image="./dataset-video-image/Spatial/gemini-london.png"></div>
         <div class="grid-item"><img src="./dataset-video-image/Spatial/gemini-nyc.jpeg" alt="Gemini Spatial NYC" onclick="openModal(this, 'image')"></div>
-        <div class="grid-item AI-error"><img src="./dataset-video-image/x-512.png" alt="Gemini Spatial World" onclick="openModal(this, 'image')" data-full-image="./dataset-video-image/Spatial/gemini-world.png"></div>
+        <div class="grid-item AI-error"><img src="./dataset-video-image/Spatial/gemini-world.png" alt="Gemini Spatial World" onclick="openModal(this, 'image')" data-full-image="./dataset-video-image/Spatial/gemini-world.png"></div>
         <div class="grid-item"><img src="./dataset-video-image/Spatial/gpt-london.png" alt="GPT Spatial London" onclick="openModal(this, 'image')"></div>
         <div class="grid-item"><img src="./dataset-video-image/Spatial/gpt-nyc.png" alt="GPT Spatial NYC" onclick="openModal(this, 'image')"></div>
         <div class="grid-item"><img src="./dataset-video-image/Spatial/gpt-world.png" alt="GPT Spatial World" onclick="openModal(this, 'image')"></div>
 
         <div class="grid-item dataset-type">Field</div>
-        <div class="grid-item AI-error"><img src="./dataset-video-image/x-512.png" alt="Claude Field Brain" onclick="openModal(this, 'image')" data-full-image="./dataset-video-image/Field/claude-brain.png"></div>
+        <div class="grid-item AI-error"><img src="./dataset-video-image/Field/claude-brain.png" alt="Claude Field Brain" onclick="openModal(this, 'image')" data-full-image="./dataset-video-image/Field/claude-brain.png"></div>
         <div class="grid-item"><img src="./dataset-video-image/Field/claude-foot.png" alt="Claude Field Foot" onclick="openModal(this, 'image')"></div>
         <div class="grid-item"><img src="./dataset-video-image/Field/claude-wind.png" alt="Claude Field Wind" onclick="openModal(this, 'image')"></div>
         <div class="grid-item"><video class="thumbnail" onclick="openModal(this, 'video')" data-video-src="./dataset-video-image/Field/gemini-brain.mp4" poster="./dataset-video-image/Field/gemini-brain.png"></video>
@@ -94,9 +98,9 @@
         <div class="grid-item"><img src="./dataset-video-image/Field/gpt-wind.png" alt="GPT Field Wind" onclick="openModal(this, 'image')"></div>
 
         <div class="grid-item dataset-type">Textual</div>
-        <div class="grid-item AI-error"><img src="./dataset-video-image/x-512.png" alt="Claude Textual Email" onclick="openModal(this, 'image')" data-full-image="./dataset-video-image/Textual/claude-email.png"></div>
+        <div class="grid-item AI-error"><img src="./dataset-video-image/Textual/claude-email.png" alt="Claude Textual Email" onclick="openModal(this, 'image')" data-full-image="./dataset-video-image/Textual/claude-email.png"></div>
         <div class="grid-item in-browser-only"><img src="./dataset-video-image/Textual/claude-federalist.png" alt="Claude Textual Federalist Papers" onclick="openModal(this, 'image')"></div>
-        <div class="grid-item AI-error"><img src="./dataset-video-image/x-512.png" alt="Claude Textual IMDB Reviews" onclick="openModal(this, 'image')" data-full-image="./dataset-video-image/Textual/claude-imdb.png"></div>
+        <div class="grid-item AI-error"><img src="./dataset-video-image/Textual/claude-imdb.png" alt="Claude Textual IMDB Reviews" onclick="openModal(this, 'image')" data-full-image="./dataset-video-image/Textual/claude-imdb.png"></div>
         <div class="grid-item"><video class="thumbnail" onclick="openModal(this, 'video')" data-video-src="./dataset-video-image/Textual/gemini-email.mp4" poster="./dataset-video-image/Textual/gemini-email.png"></video>
             <source src="./dataset-video-image/Textual/gemini-email.mp4" type="video/mp4">
         </video></div>
