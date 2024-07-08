@@ -45,8 +45,14 @@
 
         <div class="grid-item dataset-type">Tabular</div>
         <div class="grid-item"><img src="./dataset-video-image/Tabular/claude-fruit.png" alt="Claude Tabular Fresh Fruit" onclick="openModal(this, 'image')"></div>
-        <div class="grid-item in-browser-only"><img src="./dataset-video-image/Tabular/claude-health-income.png" alt="Claude Tabular Health Income" onclick="openModal(this, 'image')"></div>
-        <div class="grid-item in-browser-only"><img src="./dataset-video-image/Tabular/claude-housing.png" alt="Claude Tabular Housing Prices" onclick="openModal(this, 'image')"></div>
+        <div class="grid-item in-browser-only"><video class="thumbnail" onclick="openModal(this, 'video')" data-video-src="./dataset-video-image/Tabular/claude-health-income-vid.mov" poster="./dataset-video-image/Tabular/claude-health-income.png">
+            <source src="./dataset-video-image/Tabular/claude-health-income-vid.mov" type="video/mp4">
+        </video></div>
+        <div class="grid-item in-browser-only"><video class="thumbnail" onclick="openModal(this, 'video')" data-video-src="./dataset-video-image/Tabular/claude-housing-vid.mov" poster="./dataset-video-image/Tabular/claude-housing.png">
+            <source src="./dataset-video-image/Tabular/claude-housing-vid.mov" type="video/mp4">
+        </video></div>
+        <!-- <div class="grid-item in-browser-only"><img src="./dataset-video-image/Tabular/claude-health-income.png" alt="Claude Tabular Health Income" onclick="openModal(this, 'image')"></div>
+        <div class="grid-item in-browser-only"><img src="./dataset-video-image/Tabular/claude-housing.png" alt="Claude Tabular Housing Prices" onclick="openModal(this, 'image')"></div> -->
         <div class="grid-item"><video class="thumbnail" onclick="openModal(this, 'video')" data-video-src="./dataset-video-image/Tabular/gemini-fruit.mp4" poster="./dataset-video-image/Tabular/gemini-fruit.png">
             <source src="./dataset-video-image/Tabular/gemini-fruit.mp4" type="video/mp4">
         </video></div>
@@ -99,7 +105,9 @@
 
         <div class="grid-item dataset-type">Textual</div>
         <div class="grid-item AI-error"><img src="./dataset-video-image/Textual/claude-email.png" alt="Claude Textual Email" onclick="openModal(this, 'image')" data-full-image="./dataset-video-image/Textual/claude-email.png"></div>
-        <div class="grid-item in-browser-only"><img src="./dataset-video-image/Textual/claude-federalist.png" alt="Claude Textual Federalist Papers" onclick="openModal(this, 'image')"></div>
+        <div class="grid-item in-browser-only"><video class="thumbnail" onclick="openModal(this, 'video')" data-video-src="./dataset-video-image/Textual/claude-federalist-vid.mov" poster="./dataset-video-image/Textual/claude-federalist.png"></video>
+                <source src="./dataset-video-image/Textual/claude-federalist-vid.mov" type="video/mp4">
+            </video></div>
         <div class="grid-item AI-error"><img src="./dataset-video-image/Textual/claude-imdb.png" alt="Claude Textual IMDB Reviews" onclick="openModal(this, 'image')" data-full-image="./dataset-video-image/Textual/claude-imdb.png"></div>
         <div class="grid-item"><video class="thumbnail" onclick="openModal(this, 'video')" data-video-src="./dataset-video-image/Textual/gemini-email.mp4" poster="./dataset-video-image/Textual/gemini-email.png"></video>
             <source src="./dataset-video-image/Textual/gemini-email.mp4" type="video/mp4">
