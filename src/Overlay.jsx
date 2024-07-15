@@ -7,7 +7,9 @@ const Overlay = ({ children, onClose }) => {
       <div className="blurred-background" onClick={onClose}></div>
       <div className="card">
         <button className="close-button" onClick={onClose}>×</button>
-        {children}
+        <div className="modal-content">
+          {children}
+        </div>
       </div>
     </div>
   );

@@ -28,21 +28,34 @@ const App = () => {
       <GridContainer openModal={openModal} />
       {isOpen && (
         <Overlay onClose={closeInitialOverlay}>
-          <div>Dataset Suite.</div>
+          <div className="black-text">
+            <p> Dataset Suite.</p>
+            </div>
         </Overlay>
       )}
-      {isModalOpen && (
-        <Overlay onClose={closeModal}>
-          {modalContent.type === 'image' ? (
-            <img src={modalContent.src} alt={modalContent.alt} className="modal-media" />
-          ) : (
-            <video controls className="modal-media">
-              <source src={modalContent.src} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          )}
-        </Overlay>
-      )}
+      {isModalOpen && modalContent && (
+  <Overlay onClose={closeModal}>
+    <h2 className="modal-title">{modalContent.title}</h2>
+    <div className="modal-body">
+      <div className="image-container">
+        {modalContent.type === 'image' ? (
+          <img src={modalContent.src} alt={modalContent.alt} className="modal-media" />
+        ) : (
+          <video controls className="modal-media">
+            <source src={modalContent.src} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        )}
+      </div>
+      <div className="text-container">
+        <h3>Description</h3>
+        <p>{modalContent.description}</p>
+        <h3>Additional Information</h3>
+        <p>{modalContent.additionalInfo}</p>
+      </div>
+    </div>
+  </Overlay>
+)}
     </div>
   );
 };

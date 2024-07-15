@@ -34,10 +34,11 @@ body, html {
 
 .grid-item:hover {
   transform: scale(0.95);
-  cursor:pointer;
+  cursor: pointer;
 }
 
-.grid-item img {
+.grid-item img,
+.grid-item video {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -69,7 +70,7 @@ body, html {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -77,28 +78,77 @@ body, html {
 }
 
 .modal-content {
-  max-width: 90%;
-  max-height: 90%;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 90%;
+  height: 90%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
 }
 
-.modal-content img {
+.modal-title {
+  padding: 20px;
+  margin: 0;
+  background-color: #f0f0f0;
+  color: #333;
+  text-align: center;
+  font-size: 24px;
+}
+
+
+.modal-content h2 {
+  padding: 20px;
+  margin: 0;
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.modal-body {
+  display: flex;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #f9f9f9;
+  padding: 20px;
+}
+
+.image-container img,
+.image-container video {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
 }
 
-.modal-content video {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+.text-container {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  color: #333;
+}
+
+.text-container h3 {
+  margin-top: 0;
+}
+
+.text-container p {
+  margin-bottom: 20px;
 }
 
 .close {
   position: absolute;
-  top: 15px;
-  right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
+  top: 10px;
+  right: 20px;
+  color: #fff;
+  font-size: 30px;
   font-weight: bold;
   cursor: pointer;
 }
@@ -112,29 +162,45 @@ body, html {
   z-index: 100;
 }
 
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
 .blurred-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   background-color: rgba(240, 240, 240, 0.5);
 }
 
-.overlay {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .card {
-  width: 50%;
-  height: 70%;
+  width: 80%;
+  max-width: 1000px;
+  height: 80%;
+  max-height: 800px;
   padding: 2rem;
-  border-radius: 3%;
+  border-radius: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   background: linear-gradient(90deg, rgba(20,90,149,1) 0%, rgba(20,147,93,1) 100%);
   color: white;
   position: relative;
   filter: drop-shadow(5px 5px 10px #000000);
   z-index: 101;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .close-button {
@@ -158,7 +224,7 @@ body, html {
   .grid-container {
     grid-template-columns: auto repeat(3, 1fr);
   }
-  
+
   .header.ai-type {
     grid-column: span 1;
   }
@@ -181,4 +247,12 @@ body, html {
   text-align: center;
   padding: 10px;
   box-sizing: border-box;
+}
+
+.black-text {
+  color: black;
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
+  padding: 20px;
 }
