@@ -13,51 +13,51 @@ const gradientStyle = {
     fontWeight: 'bold',
     padding: '10px',
     textAlign: 'center',
-  };
-  
-  // Update the GridContainer component to use these styles
-  const GridContainer = ({ openModal }) => {
-    return (
-      <div className="grid-container">
-        <div className="grid-item header dataset-type" style={{ ...gradientStyle, backgroundPosition: '0 0' }}>
-          Dataset Type
-        </div>
-        {aiTypes.map(ai => (
-          <div key={ai} className="grid-item header ai-type" style={{ ...gradientStyle, gridColumn: 'span 3', backgroundPosition: 'calc((100% / 4) * (1 + ' + aiTypes.indexOf(ai) + ')) 0' }}>
-            {ai}
-          </div>
-        ))}
-        {datasetTypes.map(datasetType => (
-          <React.Fragment key={datasetType}>
-            <div className="grid-item dataset-type">{datasetType}</div>
-            {aiTypes.map(ai => (
-              <React.Fragment key={`${datasetType}-${ai}`}>
-                <GridItem
-                  datasetType={datasetType}
-                  aiType={ai}
-                  openModal={openModal}
-                  index={0}
-                />
-                <GridItem
-                  datasetType={datasetType}
-                  aiType={ai}
-                  openModal={openModal}
-                  index={1}
-                />
-                <GridItem
-                  datasetType={datasetType}
-                  aiType={ai}
-                  openModal={openModal}
-                  index={2}
-                />
-              </React.Fragment>
-            ))}
-          </React.Fragment>
-        ))}
-      </div>
-    );
-  };
-  
-  export default GridContainer;
-  
+};
 
+const GridContainer = ({ openModal }) => {
+    return (
+        <div className="grid-container">
+            <div className="grid-item header dataset-type" style={{ ...gradientStyle, backgroundPosition: '0 0' }}>
+                Dataset Type
+            </div>
+            {aiTypes.map(ai => (
+                <div key={ai} className="grid-item header ai-type" style={{ ...gradientStyle, gridColumn: 'span 3', backgroundPosition: `calc((100% / 4) * (1 + ${aiTypes.indexOf(ai)})) 0` }}>
+                    {ai}
+                </div>
+            ))}
+            {datasetTypes.map(datasetType => (
+                <React.Fragment key={datasetType}>
+                    <div className="grid-item dataset-type">{datasetType}</div>
+                    {aiTypes.map(ai => (
+                        <React.Fragment key={`${datasetType}-${ai}`}>
+                            <GridItem
+                                datasetType={datasetType}
+                                aiType={ai}
+                                openModal={openModal}
+                                index={0}
+                                className="grid-cell"
+                            />
+                            <GridItem
+                                datasetType={datasetType}
+                                aiType={ai}
+                                openModal={openModal}
+                                index={1}
+                                className="grid-cell"
+                            />
+                            <GridItem
+                                datasetType={datasetType}
+                                aiType={ai}
+                                openModal={openModal}
+                                index={2}
+                                className="grid-cell"
+                            />
+                        </React.Fragment>
+                    ))}
+                </React.Fragment>
+            ))}
+        </div>
+    );
+};
+
+export default GridContainer;

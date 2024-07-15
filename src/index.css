@@ -10,6 +10,7 @@ body, html {
   overflow: hidden;
 }
 
+
 .grid-container {
   display: grid;
   grid-template-columns: auto repeat(9, 1fr);
@@ -29,10 +30,13 @@ body, html {
   position: relative;
   border-radius: 10px;
   margin: 0.5%;
+}
+
+.grid-cell {
   transition: transform 0.3s;
 }
 
-.grid-item:hover {
+.grid-cell:hover {
   transform: scale(0.95);
   cursor: pointer;
 }
@@ -63,6 +67,8 @@ body, html {
   grid-column: span 3;
   background-position: 100% 0; /* Full span of the gradient */
 }
+
+/* Other CSS rules */
 
 .modal {
   position: fixed;
@@ -96,7 +102,6 @@ body, html {
   text-align: center;
   font-size: 24px;
 }
-
 
 .modal-content h2 {
   padding: 20px;

@@ -177,7 +177,7 @@ const getItemDetails = (datasetType, aiType, index) => {
   };
 };
 
-const GridItem = ({ datasetType, aiType, index, openModal }) => {
+const GridItem = ({ datasetType, aiType, index, openModal, className }) => {
   const imagePath = getImagePath(datasetType, aiType, index);
   const mediaPath = getMediaPath(datasetType, aiType, index);
   const altText = `${datasetType} - ${aiType} ${index + 1}`;
@@ -199,7 +199,7 @@ const GridItem = ({ datasetType, aiType, index, openModal }) => {
   const isVideo = imagePath.toLowerCase().endsWith('.mov') || imagePath.toLowerCase().endsWith('.mp4');
 
   return (
-    <div className="grid-item" onClick={handleOpen} style={borderStyle}>
+    <div className={`grid-item ${className}`} onClick={handleOpen} style={borderStyle}>
       {isVideo ? (
         <video src={imagePath} alt={altText} preload="metadata" />
       ) : (
@@ -208,5 +208,6 @@ const GridItem = ({ datasetType, aiType, index, openModal }) => {
     </div>
   );
 };
+
 
 export default GridItem;

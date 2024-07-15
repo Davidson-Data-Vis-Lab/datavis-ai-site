@@ -39,7 +39,8 @@ const App = () => {
       {isOpen && (
         <Overlay onClose={closeInitialOverlay}>
           <div className="black-text">
-            <p>Dataset Suite.</p>
+            <h1>Dataset Suite.</h1>
+            <p>This is our dataset test suite for large language models. We curated a collection of 18 datasets across 6 different dataset types. We tested our datasets using Claude, Gemini, and ChatGPT to see how well these AIs would create data visualizations with minimal prompting. Our results are displayed on this webpage.</p>
           </div>
         </Overlay>
       )}
