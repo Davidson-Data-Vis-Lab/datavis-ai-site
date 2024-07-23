@@ -1,0 +1,15 @@
+import bpy
+
+# Load the .blend file (replace 'your_file.blend' with the actual path)
+bpy.ops.wm.open_mainfile(filepath="your_file.blend")
+
+# Access scene data
+scene = bpy.context.scene
+
+# Example: Print names of all objects in the scene
+for obj in scene.objects:
+    print(obj.name)
+
+# Example: Render the scene to an image (replace 'output.png' with desired path)
+bpy.context.scene.render.filepath = "output.png"
+bpy.ops.render.render(write_still=True) 

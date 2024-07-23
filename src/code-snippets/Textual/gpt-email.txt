@@ -1,0 +1,32 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the data from the CSV file
+file_path = '/Users/yoder/Documents/SUMMER24/dataset-testing-suite-06-27-24/Textual/enron-email/data/e-small.csv'
+data = pd.read_csv(file_path)
+
+# Count the number of messages per file
+file_message_counts = data['file'].value_counts()
+
+# Limit the data to the top 20 files with the most messages
+top_files_message_counts = file_message_counts.head(20)
+
+# Create a horizontal bar chart for the top 20 files
+plt.figure(figsize=(12, 8))
+top_files_message_counts.plot(kind='barh')
+plt.title('Top 20 Files by Number of Messages')
+plt.xlabel('Number of Messages')
+plt.ylabel('File')
+plt.tight_layout()
+
+# Save the plot to a file
+plot_path = 'top_files_message_distribution_horizontal.png'
+plt.savefig(plot_path)
+
+# Display the plot
+plt.show()
+
+# Optionally, display the top 20 files with their message counts in a DataFrame
+top_files_message_counts_df = top_files_message_counts.reset_index()
+top_files_message_counts_df.columns = ['File', 'Number of Messages']
+print(top_files_message_counts_df)

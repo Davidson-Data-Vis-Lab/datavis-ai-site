@@ -1,0 +1,48 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import cartopy.crs as ccrs
+import numpy as np
+import ssl
+import urllib.request
+
+# Disable SSL verification (not recommended for production use)
+ssl._create_default_https_context = ssl._create_unverified_context
+
+# Read the CSV data
+data = pd.read_csv('data') # Replace data with actual file path - DJY edit
+
+# Create a new figure with a specific size
+plt.figure(figsize=(15, 10))
+
+# Create a map using Plate Carree projection
+ax = plt.axes(projection=ccrs.PlateCarree())
+
+# Set the extent of the map
+ax.set_extent([data['longitude'].min() - 1, data['longitude'].max() + 1,
+               data['latitude'].min() - 1, data['latitude'].max() + 1])
+
+# Calculate u and v components of the wind
+data['u'] = -data['speed'] * np.sin(np.deg2rad(data['dir']))
+data['v'] = -data['speed'] * np.cos(np.deg2rad(data['dir']))
+
+# Plot wind vectors
+ax.quiver(data['longitude'], data['latitude'], data['u'], data['v'],
+          transform=ccrs.PlateCarree(),
+          scale=50, scale_units='inches', color='blue', alpha=0.6)
+
+# Add gridlines
+ax.gridlines(draw_labels=True)
+
+# Add a colorbar to represent wind speed
+scatter = ax.scatter(data['longitude'], data['latitude'], c=data['speed'],
+                     cmap='viridis', transform=ccrs.PlateCarree())
+plt.colorbar(scatter, label='Wind Speed (m/s)')
+
+# Set title
+plt.title('Wind Vector Map')
+
+# Save the figure
+plt.savefig('wind_map.png', dpi=300, bbox_inches='tight')
+
+# Display the plot
+plt.show()

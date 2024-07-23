@@ -1,0 +1,53 @@
+import osmium
+import folium
+from osmium import InvalidLocationError
+
+class OsmHandler(osmium.SimpleHandler):
+    def __init__(self):
+        super(OsmHandler, self).__init__()
+        self.nodes = []
+        self.ways = []
+
+    def node(self, n):
+        try:
+            self.nodes.append((n.location.lat, n.location.lon))
+        except InvalidLocationError:
+            # Skip nodes with invalid locations
+            pass
+
+    def way(self, w):
+        way_nodes = []
+        for node in w.nodes:
+            try:
+                way_nodes.append((node.lat, node.lon))
+            except InvalidLocationError:
+                # Skip nodes with invalid locations
+                pass
+        if len(way_nodes) > 1:  # Only add ways with at least 2 valid nodes
+            self.ways.append(way_nodes)
+
+def visualize_osm(osm_file_path, output_html_path):
+    # Parse OSM data
+    handler = OsmHandler()
+    handler.apply_file(osm_file_path)
+
+    # Create a map centered on the first valid node
+    map_center = next((node for node in handler.nodes if all(map(lambda x: -90 <= x <= 90, node))), (0, 0))
+    osm_map = folium.Map(location=map_center, zoom_start=14)
+
+    # Add nodes to the map
+    for node in handler.nodes:
+        if all(map(lambda x: -90 <= x <= 90, node)):  # Check if latitude and longitude are within valid range
+            folium.CircleMarker(location=node, radius=2, color='blue', fill=True).add_to(osm_map)
+
+    # Add ways to the map
+    for way in handler.ways:
+        folium.PolyLine(locations=way, color='red', weight=2).add_to(osm_map)
+
+    # Save the map
+    osm_map.save(output_html_path)
+
+# Usage
+osm_file_path = 'data' # Replace data with actual file path - DJY edit
+output_html_path = 'osm_visualization.html'
+visualize_osm(osm_file_path, output_html_path)

@@ -1,0 +1,40 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the Excel file
+file_path = 'data'  # Update this path to the location of your file # Replace data with actual file path - DJY edit
+
+xls = pd.ExcelFile(file_path)
+
+# Load the data from the 'PccFarm' sheet
+df = pd.read_excel(file_path, sheet_name='PccFarm')
+
+# Cleaning the data
+# Drop the first two rows and use the third row as headers
+df_cleaned = df.drop([0, 1, 2]).reset_index(drop=True)
+df_cleaned.columns = df.iloc[1]
+df_cleaned = df_cleaned.rename(columns={df_cleaned.columns[0]: 'Year'}).reset_index(drop=True)
+
+# Convert the 'Year' column to numeric, forcing errors to NaN and then dropping them
+df_cleaned['Year'] = pd.to_numeric(df_cleaned['Year'], errors='coerce')
+df_cleaned = df_cleaned.dropna(subset=['Year'])
+
+# Convert the rest of the columns to numeric
+df_cleaned = df_cleaned.apply(pd.to_numeric, errors='coerce')
+
+# Set 'Year' as the index
+df_cleaned = df_cleaned.set_index('Year')
+
+# Plot the data
+total_fruit_column = 'Total fresh fruit per capita availability (farm weight)3'
+
+plt.figure(figsize=(12, 6))
+plt.plot(df_cleaned.index, df_cleaned[total_fruit_column], marker='o', linestyle='-')
+plt.title('Total Fresh Fruit Per Capita Availability (Farm Weight) Over the Years')
+plt.xlabel('Year')
+plt.ylabel('Availability (Pounds)')
+plt.grid(True)
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+plt.show()

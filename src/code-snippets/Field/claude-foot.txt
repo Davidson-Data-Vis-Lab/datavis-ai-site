@@ -1,0 +1,64 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def read_raw_file(file_path, dtype=np.float32, shape=None):
+    """
+    Read a .raw file into a NumPy array.
+    
+    :param file_path: Path to the .raw file
+    :param dtype: Data type of the values in the file (default: np.float32)
+    :param shape: Shape of the data (if known)
+    :return: NumPy array containing the data
+    """
+    data = np.fromfile(file_path, dtype=dtype)
+    if shape is not None:
+        try:
+            data = data.reshape(shape)
+        except ValueError:
+            print(f"Warning: Cannot reshape data to {shape}. Using flat array.")
+            print(f"Data size: {data.size}")
+            # If reshape fails, we'll return the flat array
+    return data
+
+def visualize_field_data(data, title="Field Data Visualization"):
+    """
+    Visualize the field data as a 2D heatmap.
+    
+    :param data: 2D NumPy array containing the field data
+    :param title: Title for the plot
+    """
+    plt.figure(figsize=(10, 8))
+    if data.ndim == 2:
+        plt.imshow(data, cmap='viridis', interpolation='nearest')
+    else:
+        # If data is 1D, we'll plot it as a line
+        plt.plot(data)
+    plt.colorbar(label='Value')
+    plt.title(title)
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.show()
+
+def main():
+    # Replace with your .raw file path
+    raw_file_path = 'data' # Replace data with actual file path - DJY edit
+    
+    # First, let's read the data without specifying a shape
+    data = read_raw_file(raw_file_path, dtype=np.float32)
+    
+    print(f"Data size: {data.size}")
+    
+    # Try to determine the best square shape
+    side_length = int(np.sqrt(data.size))
+    
+    if side_length * side_length == data.size:
+        print(f"Data can be reshaped to a square: ({side_length}, {side_length})")
+        data = data.reshape((side_length, side_length))
+    else:
+        print("Data cannot be reshaped to a perfect square. Using original shape.")
+    
+    # Visualize the data
+    visualize_field_data(data, title="Field Dataset Visualization")
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,39 @@
+import pandas as pd
+import altair as alt
+
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+
+# Read the CSV file into a DataFrame
+df = pd.read_excel('data', skiprows=2)  # Changed to read_excel from read_csv - DJY # Replace data with actual file path - DJY edit
+
+# Drop the first two rows which contain null values and dashes
+df = df.iloc[2:].copy()
+
+# Drop the row which has the string 'NA = Not available.'
+df = df[df['Year2'] != 'NA = Not available. ']
+
+# Filter the DataFrame to keep only the rows where `Year2` is numeric
+df = df[pd.to_numeric(df['Year2'], errors='coerce').notna()].copy()
+
+# Convert `Year2` to numeric
+df['Year2'] = pd.to_numeric(df['Year2'])
+
+# Convert columns to numeric
+df['Total citrus3'] = pd.to_numeric(df['Total citrus3'])
+df['Total noncitrus3'] = pd.to_numeric(df['Total noncitrus3'])
+
+# Melt the DataFrame to long format
+df_melted = df.melt(id_vars='Year2', value_vars=['Total citrus3', 'Total noncitrus3'], var_name='Fruit Type', value_name='Pounds per Capita')
+
+# Create a line chart
+chart = alt.Chart(df_melted).mark_line(point=True).encode(
+    x=alt.X('Year2:O', axis=alt.Axis(title='Year')),
+    y=alt.Y('Pounds per Capita:Q', axis=alt.Axis(title='Pounds per Capita')),
+    color='Fruit Type:N',
+    tooltip=['Year2', 'Fruit Type', 'Pounds per Capita']
+).properties(
+    title='Total Citrus and Non-Citrus Fruit Availability Over Time'
+).interactive()
+
+chart.show() # changed to .show()

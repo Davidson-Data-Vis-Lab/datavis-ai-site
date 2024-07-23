@@ -1,0 +1,36 @@
+import pandas as pd
+import xml.etree.ElementTree as ET
+import matplotlib.pyplot as plt
+
+# Load and parse the OSM XML file
+file_path = 'data' # Replace data with actual file path - DJY edit
+tree = ET.parse(file_path)
+root = tree.getroot()
+
+# Extract relevant information (nodes and their attributes)
+nodes = []
+for node in root.findall('node'):
+    node_id = node.get('id')
+    lat = float(node.get('lat'))
+    lon = float(node.get('lon'))
+    tags = {tag.get('k'): tag.get('v') for tag in node.findall('tag')}
+    nodes.append({'id': node_id, 'lat': lat, 'lon': lon, 'tags': tags})
+
+# Convert to a DataFrame for easier handling
+nodes_df = pd.DataFrame(nodes)
+
+# Separate nodes with and without tags
+nodes_with_tags = nodes_df[nodes_df['tags'].apply(lambda x: len(x) > 0)]
+nodes_without_tags = nodes_df[nodes_df['tags'].apply(lambda x: len(x) == 0)]
+
+# Plot the nodes on a map
+plt.figure(figsize=(10, 8))
+plt.scatter(nodes_without_tags['lon'], nodes_without_tags['lat'], s=10, c='blue', label='Node without tags', alpha=0.5)
+plt.scatter(nodes_with_tags['lon'], nodes_with_tags['lat'], s=10, c='red', label='Node with tags', alpha=0.7)
+
+plt.xlabel('Longitude')
+plt.ylabel('Latitude')
+plt.title('OSM Nodes Visualization')
+plt.legend()
+plt.grid(True)
+plt.show()

@@ -1,0 +1,24 @@
+import bpy
+import sys
+
+def visualize_blend_file(file_path):
+    # Clear existing scene
+    bpy.ops.wm.read_factory_settings(use_empty=True)
+    
+    # Load the .blend file
+    bpy.ops.wm.open_mainfile(filepath=file_path)
+    
+    # Set up the scene for rendering
+    scene = bpy.context.scene
+    scene.render.image_settings.file_format = 'PNG'
+    scene.render.filepath = "//rendered_image.png"
+    
+    # Render the scene
+    bpy.ops.render.render(write_still=True)
+
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        blend_file_path = sys.argv[-1]
+        visualize_blend_file(blend_file_path)
+    else:
+        print("Please provide a .blend file path as an argument.")

@@ -1,0 +1,46 @@
+import json
+import matplotlib.pyplot as plt
+from shapely.geometry import Polygon
+from matplotlib.patches import Polygon as MplPolygon
+
+# Load the TopoJSON data
+with open('data') as f: # Replace data with actual file path - DJY edit
+    topo_data = json.load(f)
+
+# Convert arcs to coordinates
+def arcs_to_coords(arc_indices, arc_coords):
+    coords = []
+    for idx in arc_indices:
+        if idx >= 0:
+            coords.extend(arc_coords[idx])
+        else:
+            coords.extend(reversed(arc_coords[~idx]))
+    return coords
+
+# Extract arc coordinates
+arc_coords = [
+    [[p[0] * topo_data['transform']['scale'][0] + topo_data['transform']['translate'][0],
+      p[1] * topo_data['transform']['scale'][1] + topo_data['transform']['translate'][1]]
+     for p in arc]
+    for arc in topo_data['arcs']
+]
+
+# Plot the map
+fig, ax = plt.subplots(figsize=(15, 10))
+
+for geom in topo_data['objects']['land']['arcs']:
+    if isinstance(geom[0], list):
+        for arc in geom:
+            coords = arcs_to_coords(arc, arc_coords)
+            polygon = MplPolygon(coords, closed=True, edgecolor='black', facecolor='none')
+            ax.add_patch(polygon)
+    else:
+        coords = arcs_to_coords(geom, arc_coords)
+        polygon = MplPolygon(coords, closed=True, edgecolor='black', facecolor='none')
+        ax.add_patch(polygon)
+
+ax.set_xlim(-180, 180)
+ax.set_ylim(-90, 90)
+ax.set_aspect('equal', 'box')
+ax.set_title('Geographical Boundaries Visualization')
+plt.show()

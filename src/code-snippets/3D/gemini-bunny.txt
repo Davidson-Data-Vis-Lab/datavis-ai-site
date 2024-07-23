@@ -1,0 +1,33 @@
+import open3d as o3d
+import os
+
+# Directory Setup
+data_dir = "data"  # Replace data with actual file path - DJY edit
+
+# Load Point Clouds (PLY Files)
+ply_files = [f for f in os.listdir(data_dir) if f.endswith(".ply")]
+
+point_clouds = []
+for ply_file in ply_files:
+    ply_path = os.path.join(data_dir, ply_file)
+    pcd = o3d.io.read_point_cloud(ply_path)
+    point_clouds.append(pcd)
+
+# Optional: Visualize Individual Point Clouds (for debugging)
+# o3d.visualization.draw_geometries(point_clouds)
+
+# Load Configuration (if applicable)
+conf_file = [f for f in os.listdir(data_dir) if f.endswith(".conf")]
+if conf_file:
+    conf_path = os.path.join(data_dir, conf_file[0])
+    with open(conf_path, 'r') as f:
+        conf_data = f.read()  
+        # Process the configuration data as needed
+
+# Combine Point Clouds (if desired)
+combined_pcd = o3d.geometry.PointCloud()
+for pcd in point_clouds:
+    combined_pcd += pcd
+
+# Visualize Combined Point Cloud
+o3d.visualization.draw_geometries([combined_pcd]) 

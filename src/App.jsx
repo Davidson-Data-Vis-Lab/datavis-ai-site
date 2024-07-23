@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import GridContainer from './GridContainer';
 import Overlay from './Overlay';
 import FullScreenMedia from './FullScreenMedia';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import './index.css';
 
 const App = () => {
@@ -59,10 +61,10 @@ const App = () => {
                 )}
               </div>
               <div className="text-container">
-                <h3>Description</h3>
-                <p>{modalContent.description}</p>
-                <h3>Additional Information</h3>
-                <p>{modalContent.additionalInfo}</p>
+                <h3>Code</h3>
+                <SyntaxHighlighter language="javascript" style={vscDarkPlus}>
+                  {modalContent.code}
+                </SyntaxHighlighter>
               </div>
             </div>
           </div>

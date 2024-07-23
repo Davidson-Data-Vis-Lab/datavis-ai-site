@@ -1,0 +1,42 @@
+import pandas as pd
+
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+
+# Read the CSV file into a DataFrame
+df = pd.read_csv("data") # Replace data with actual file path - DJY edit
+
+# Display the first 5 rows
+print(df.head().to_markdown(index=False, numalign="left", stralign="left"))
+
+# Print the column names and their data types
+print(df.info())
+
+import altair as alt
+
+# Create a quiver plot
+quiver_chart = alt.Chart(df).mark_point(shape='arrow').encode(
+    x='longitude',
+    y='latitude',
+    angle='dir:Q',
+    size='speed:Q',
+    color='speed:Q',
+    tooltip=['longitude', 'latitude', 'dir', 'speed']
+).properties(
+    title='Wind Direction and Speed'
+).interactive()
+
+# Create a bar plot for `dirCat`
+bar_chart = alt.Chart(df).mark_bar().encode(
+    x='dirCat:N',
+    y='count()',
+    tooltip=['dirCat', 'count()']
+).properties(
+    title='Frequency of Wind Directions'
+).interactive()
+
+# Combine the two plots
+fig = quiver_chart | bar_chart
+
+# Save the chart
+fig.show() # edited to .show

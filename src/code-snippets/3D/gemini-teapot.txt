@@ -1,0 +1,68 @@
+import re
+import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Read the contents of the file "tp.txt"
+with open("data", "r") as file: # Replace data with actual file path - DJY edit
+    tp_data = file.read()
+
+# Function to parse a point string
+def parse_point(point_str):
+  match = re.match(r'pt\(\s*(-?\d+\.?\d*),\s*(-?\d+\.?\d*),\s*(-?\d+\.?\d*)\s*\)', point_str)
+  if match:
+    return [float(x) for x in match.groups()]
+  else:
+    return None
+
+# Function to parse a surface string
+def parse_surface(surface_str):
+  points = []
+  for line in surface_str.split('\n'):
+    if line.strip().startswith('pt'):
+      point = parse_point(line.strip())
+      if point:
+        points.append(point)
+  # Check if there are exactly 16 points before reshaping
+  if len(points) == 16:
+    return np.array(points).reshape(4, 4, 3)
+  else:
+    return None  # Skip this surface if not enough points
+
+# Extract surface data
+surfaces = []
+current_surface = []
+for line in tp_data.split('\n'):
+  if line.strip().startswith('surface'):
+    if current_surface:
+      surface = parse_surface('\n'.join(current_surface))
+      if surface is not None:  # Append only if valid surface
+        surfaces.append(surface)
+      current_surface = []
+  else:
+    current_surface.append(line)
+if current_surface:
+  surface = parse_surface('\n'.join(current_surface))
+  if surface is not None:  # Append only if valid surface
+    surfaces.append(surface)
+
+# Create 3D plot
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+# Plot surfaces
+for surface in surfaces:
+  x, y, z = surface[:, :, 0], surface[:, :, 1], surface[:, :, 2]
+  ax.scatter(x, y, z, color='blue')
+  for i in range(4):
+    ax.plot(x[i, :], y[i, :], z[i, :], color='blue')
+    ax.plot(x[:, i], y[:, i], z[:, i], color='blue')
+
+# Set labels and title
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+ax.set_title('Teapot 3D Plot')
+
+# Show the plot
+plt.show()
