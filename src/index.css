@@ -174,15 +174,31 @@ body, html {
 }
 
 .overlay {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
   display: flex;
-  justify-content: center;
   align-items: center;
-  z-index: 1000;
+  justify-content: center;
+}
+
+.overlay-warning {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  margin: 0;
+  padding: 10px;
+  width: 100%;
+  color: white;
+  text-align: center;
 }
 
 .blurred-background {
@@ -313,4 +329,111 @@ body, html {
 
 .code-preview {
   font-size: 10px;
+}
+
+.initial-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #145A95 0%, #14935D 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.initial-overlay .overlay-content {
+  background: white;
+  border-radius: 15px;
+  padding: 30px;
+  width: 90%;
+  max-width: 600px;
+  height: 80vh;
+  max-height: 600px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.initial-overlay .scrollable-content {
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-right: 15px;
+  margin-right: -15px;
+}
+
+.initial-overlay h1 {
+  font-size: 1.8rem;
+  color: #145A95;
+  margin-bottom: 10px;
+}
+
+.initial-overlay h2 {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.initial-overlay section {
+  margin-bottom: 15px;
+}
+
+.initial-overlay h3 {
+  font-size: 1.2rem;
+  color: #14935D;
+  margin-bottom: 8px;
+}
+
+.initial-overlay p, .initial-overlay ul {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.initial-overlay ul {
+  padding-left: 20px;
+  margin-top: 5px;
+}
+
+.initial-overlay .start-exploring {
+  display: block;
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px;
+  font-size: 1rem;
+  color: white;
+  background-color: #145A95;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.initial-overlay .start-exploring:hover {
+  background-color: #14935D;
+}
+
+@media (max-width: 768px) {
+  .initial-overlay .overlay-content {
+    padding: 20px;
+    height: 90vh;
+  }
+
+  .initial-overlay h1 {
+    font-size: 1.5rem;
+  }
+
+  .initial-overlay h2 {
+    font-size: 0.9rem;
+  }
+
+  .initial-overlay h3 {
+    font-size: 1.1rem;
+  }
 }

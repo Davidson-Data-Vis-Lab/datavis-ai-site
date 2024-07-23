@@ -158,12 +158,37 @@ const GridItem = ({ datasetType, aiType, index, openModal, className }) => {
 
   const isVideo = imagePath.toLowerCase().endsWith('.mov') || imagePath.toLowerCase().endsWith('.mp4');
 
+  const getOverlayText = () => {
+    if (
+      (datasetType === 'Textual' && aiType === 'Claude' && (index === 0 || index === 2)) ||
+      (datasetType === 'Network' && aiType === 'Claude' && index === 2) ||
+      (datasetType === 'Spatial' && aiType === 'Gemini' && (index === 0 || index === 2)) ||
+      (datasetType === 'Field' && aiType === 'Claude' && index === 0) ||
+      (datasetType === 'Textual' && aiType === 'Gemini' && index === 1)
+    ) {
+      return "Model was unable to generate visualization";
+    } else if (
+      (datasetType === 'Tabular' && aiType === 'Claude' && (index === 1 || index === 2)) ||
+      (datasetType === 'Textual' && aiType === 'Claude' && index === 1)
+    ) {
+      return "Visualization only works with truncated versions of the data";
+    }
+    return null;
+  };
+
+  const overlayText = getOverlayText();
+
   return (
     <div className={`grid-item ${className}`} onClick={handleOpen} style={borderStyle}>
       {isVideo ? (
         <video src={imagePath} alt={altText} preload="metadata" />
       ) : (
         <img src={imagePath} alt={altText} />
+      )}
+      {overlayText && (
+        <div className="overlay-warning">
+          <p>{overlayText}</p>
+        </div>
       )}
     </div>
   );
