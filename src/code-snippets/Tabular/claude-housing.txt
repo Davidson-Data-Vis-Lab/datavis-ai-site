@@ -1,0 +1,60 @@
+import React, { useState, useEffect } from 'react';
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+
+const parseCSV = (text) => {
+  const lines = text.split('\n');
+  const headers = lines[0].split(',');
+  return lines.slice(1).map(line => {
+    const values = line.split(',');
+    return headers.reduce((obj, header, index) => {
+      obj[header] = values[index];
+      return obj;
+    }, {});
+  });
+};
+
+const HousePriceScatterPlot = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetch('Users/dayoder/Documents/claude-testing/public/hp.csv')
+      .then(response => response.text())
+      .then(text => {
+        const parsedData = parseCSV(text);
+        const formattedData = parsedData.map(item => ({
+          price: parseFloat(item.price),
+          area: parseFloat(item.area)
+        }));
+        setData(formattedData);
+      })
+      .catch(error => console.error('Error loading the CSV file:', error));
+  }, []);
+
+  const formatPrice = (value) => {
+    return `$${(value / 1000000).toFixed(2)}M`;
+  };
+
+  return (
+    <ResponsiveContainer width="100%" height={400}>
+      <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 60 }}>
+        <CartesianGrid />
+        <XAxis type="number" dataKey="area" name="Area" unit=" sq ft" />
+        <YAxis 
+          type="number" 
+          dataKey="price" 
+          name="Price" 
+          tickFormatter={formatPrice}
+        />
+        <Tooltip 
+          formatter={(value, name) => [
+            name === 'Price' ? formatPrice(value) : `${value} sq ft`, 
+            name
+          ]}
+        />
+        <Scatter name="Houses" data={data} fill="#8884d8" />
+      </ScatterChart>
+    </ResponsiveContainer>
+  );
+};
+
+export default HousePriceScatterPlot;

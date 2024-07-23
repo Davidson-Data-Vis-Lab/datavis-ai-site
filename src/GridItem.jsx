@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState, useEffect } from 'react';
 import './index.css';
 
 const getImagePath = (datasetType, aiType, index) => {
@@ -104,85 +105,45 @@ const getItemDetails = (datasetType, aiType, index) => {
     'Textual': ['Email Classification', 'Federalist Papers', 'IMDB Movie Reviews'],
   };
 
-  const descriptions = {
-    '3D': [
-      'A 3D model of the Stanford Bunny, a common test model in computer graphics.',
-      'Blender\'s default monkey model, named Suzanne.',
-      'The Utah teapot, a 3D model that has become a standard reference object in computer graphics.',
-    ],
-    'Field': [
-      'An MRI scan of a human brain, showing detailed internal structures.',
-      'An X-ray image of a human foot, revealing bone structure.',
-      'A visualization of global wind patterns and atmospheric circulation.',
-    ],
-    'Network': [
-      'A social network graph of bat colonies, showing their interconnections.',
-      'A network representation of neural connections in a cat\'s brain.',
-      'A character relationship graph from Victor Hugo\'s novel Les Misérables.',
-    ],
-    'Spatial': [
-      'A map of London\'s underground tube system, showing different lines and stations.',
-      'A map of New York City\'s subway system, displaying various routes and stops.',
-      'A world map showing population density across different regions.',
-    ],
-    'Tabular': [
-      'A dataset containing nutritional information for various fruits.',
-      'A scatter plot showing the relationship between health outcomes and income levels.',
-      'A dataset of housing prices with various features like location, size, and amenities.',
-    ],
-    'Textual': [
-      'A dataset of emails classified into categories like spam, promotional, or personal.',
-      'The collection of 85 articles written to promote the ratification of the US Constitution.',
-      'A large dataset of movie reviews from the Internet Movie Database (IMDB).',
-    ],
-  };
-
-  const additionalInfo = {
-    '3D': [
-      'The Stanford Bunny is a computer graphics 3D test model developed in 1994. It consists of 69,451 polygons.',
-      'Suzanne, the monkey head, is Blender\'s alternative to the Utah Teapot. It\'s named after the orangutan in the film "Jay and Silent Bob Strike Back".',
-      'The Utah teapot, created in 1975, is one of the most recognizable 3D models in computer graphics history.',
-    ],
-    'Field': [
-      'MRI (Magnetic Resonance Imaging) uses strong magnetic fields and radio waves to produce detailed images of the inside of the body.',
-      'X-rays use ionizing radiation to visualize the internal structures of the body, particularly useful for examining bones.',
-      'Wind patterns are crucial for understanding weather systems, climate patterns, and atmospheric circulation on a global scale.',
-    ],
-    'Network': [
-      'Social network analysis in bats helps researchers understand disease transmission and social behavior in these mammals.',
-      'Brain networks in cats have been studied to understand sensory processing, particularly in the visual cortex.',
-      'The Les Misérables character co-occurrence network is a classic example used in network analysis and visualization.',
-    ],
-    'Spatial': [
-      'The London Underground, opened in 1863, is the world\'s oldest underground railway network.',
-      'The New York City Subway is one of the world\'s largest metro systems, with 472 stations in operation.',
-      'Population density maps help in urban planning, resource allocation, and understanding human geographic patterns.',
-    ],
-    'Tabular': [
-      'Nutritional data helps in understanding the health benefits of different fruits and in planning balanced diets.',
-      'The relationship between health and income is a key area of study in public health and economics.',
-      'Housing price datasets are crucial for real estate market analysis, urban planning, and economic studies.',
-    ],
-    'Textual': [
-      'Email classification is essential for spam filtering, organizing inboxes, and prioritizing communications.',
-      'The Federalist Papers played a crucial role in promoting the ratification of the United States Constitution.',
-      'The IMDB dataset is widely used in sentiment analysis and natural language processing tasks.',
-    ],
-  };
-
   return {
     title: `${titles[datasetType][index]} (${aiType})`,
-    description: descriptions[datasetType][index],
-    additionalInfo: additionalInfo[datasetType][index],
   };
 };
 
+const codeFiles = import.meta.glob('/src/code-snippets/**/*.txt', { as: 'raw' });
+
 const GridItem = ({ datasetType, aiType, index, openModal, className }) => {
+  const [code, setCode] = useState('// Loading code...');
   const imagePath = getImagePath(datasetType, aiType, index);
   const mediaPath = getMediaPath(datasetType, aiType, index);
   const altText = `${datasetType} - ${aiType} ${index + 1}`;
   const borderStyle = getBorderStyle(datasetType, aiType, index);
-  const { title, description, additionalInfo } = getItemDetails(datasetType, aiType, index);
+  const { title } = getItemDetails(datasetType, aiType, index);
+
+  useEffect(() => {
+    const itemNames = {
+      '3D': ['bunny', 'monkey', 'teapot'],
+      'Field': ['brain', 'foot', 'wind'],
+      'Network': ['bat', 'cat', 'lesmis'],
+      'Spatial': ['london', 'nyc', 'world'],
+      'Tabular': ['fruit', 'health', 'housing'],
+      'Textual': ['email', 'fed', 'imdb']
+    };
+
+    const itemName = itemNames[datasetType][index];
+    const fileName = `/src/code-snippets/${datasetType}/${aiType.toLowerCase()}-${itemName}.txt`;
+
+    if (codeFiles[fileName]) {
+      codeFiles[fileName]().then(content => {
+        setCode(content);
+      }).catch(error => {
+        console.error('Error loading code:', error);
+        setCode('// Error loading code');
+      });
+    } else {
+      setCode('// Code file not found');
+    }
+  }, [datasetType, aiType, index]);
 
   const handleOpen = () => {
     const contentType = mediaPath.toLowerCase().endsWith('.mov') || mediaPath.toLowerCase().endsWith('.mp4') ? 'video' : 'image';
@@ -190,9 +151,8 @@ const GridItem = ({ datasetType, aiType, index, openModal, className }) => {
       src: mediaPath, 
       alt: altText, 
       type: contentType, 
-      title, 
-      description, 
-      additionalInfo 
+      title,
+      code 
     });
   };
 
@@ -208,6 +168,5 @@ const GridItem = ({ datasetType, aiType, index, openModal, className }) => {
     </div>
   );
 };
-
 
 export default GridItem;

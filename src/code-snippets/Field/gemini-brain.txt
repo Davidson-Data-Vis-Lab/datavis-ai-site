@@ -1,0 +1,31 @@
+import pandas as pd
+import altair as alt
+
+# Remove the first 2 lines from the file.
+with open('rank_0_positions_reduced_2.txt', 'r') as f:
+  lines = f.readlines()[2:]
+with open('rank_0_positions_reduced_2_modified.txt', 'w') as f:
+  f.writelines(lines)
+
+# Read the data from the modified file into a DataFrame.
+df = pd.read_csv('rank_0_positions_reduced_2_modified.txt', header=None, delimiter=' ', engine='python')
+
+# Convert column names to strings
+df.columns = df.columns.astype(str)
+
+# Sample 1000 rows from the dataframe.
+sampled_df = df.sample(1000)
+
+# Create a 3D scatter plot using the sampled data.
+# Note that Altair doesn't directly support 3D scatter plots.
+# We'll create a 2D scatter plot with size encoding to simulate depth.
+chart = alt.Chart(sampled_df).mark_circle().encode(
+    x=alt.X('0', axis=alt.Axis(title='X')),
+    y=alt.Y('1', axis=alt.Axis(title='Y')),
+    size=alt.Size('3', legend=None),  # Use the third column for size encoding
+    tooltip=['0', '1', '2', '3']
+).properties(
+    title='3D Scatter Plot of Positions (Simulated)'
+).interactive()
+
+chart.show() # changed to .show

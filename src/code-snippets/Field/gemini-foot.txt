@@ -1,0 +1,19 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Image information (you need to know this)
+width = 4096
+height = 4096
+bits_per_pixel = 8  # Assuming 8-bit grayscale
+
+# Load the raw data
+with open("data", "rb") as f: # Replace data with actual file path - DJY edit
+    raw_data = np.fromfile(f, dtype=np.uint8)  
+
+# Reshape to image dimensions
+image = raw_data.reshape((height, width))
+
+# Display the image
+plt.imshow(image, cmap='gray')
+plt.title("Your Grayscale Image")
+plt.show()

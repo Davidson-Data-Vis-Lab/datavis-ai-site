@@ -1,0 +1,28 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+def read_raw_file(filename, width, height, dtype=np.uint8):
+    # Read raw file data
+    with open(filename, 'rb') as file:
+        raw_data = file.read()
+
+    # Convert raw data to numpy array
+    image_data = np.frombuffer(raw_data, dtype=dtype)
+
+    # Reshape data according to image dimensions
+    image_data = image_data.reshape((height, width))
+    return image_data
+
+def visualize_raw_image(image_data):
+    plt.imshow(image_data, cmap='gray')
+    plt.colorbar()
+    plt.title('Raw Image Visualization')
+    plt.show()
+
+# Example usage
+filename = 'data' # Replace data with actual file path - DJY edit
+width, height = 4096, 4096  # Adjust dimensions as needed
+dtype = np.uint8  # Adjust data type as needed
+
+image_data = read_raw_file(filename, width, height, dtype)
+visualize_raw_image(image_data)

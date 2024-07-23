@@ -1,0 +1,27 @@
+import React from 'react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+const data = [
+  { name: 'No. 10', words: 4175 },
+  { name: 'No. 51', words: 3508 },
+  { name: 'No. 70', words: 4282 },
+  { name: 'No. 78', words: 3728 },
+  { name: 'No. 84', words: 5729 }
+];
+
+const FederalistPapersChart = () => (
+  <div style={{ width: '100%', height: 400 }}>
+    <h2 style={{ textAlign: 'center' }}>Word Count of Federalist Papers</h2>
+    <ResponsiveContainer>
+      <BarChart data={data}>
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        <Bar dataKey="words" fill="#8884d8" />
+      </BarChart>
+    </ResponsiveContainer>
+  </div>
+);
+
+export default FederalistPapersChart;

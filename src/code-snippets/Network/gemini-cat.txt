@@ -1,0 +1,37 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+
+def visualize_edges_file(file_path, layout="spring", node_size=500, font_size=10):
+    """
+    Visualizes a graph from a .edges file.
+
+    Args:
+        file_path (str): Path to the .edges file.
+        layout (str): Layout algorithm ("spring", "circular", "kamada_kawai", etc.). Default is "spring".
+        node_size (int): Size of the nodes. Default is 500.
+        font_size (int): Size of the node labels. Default is 10.
+    """
+
+    G = nx.read_edgelist(file_path, create_using=nx.Graph())  # Create a graph from edgelist
+    
+    # Choose layout algorithm (many options available!)
+    pos = {
+        "spring": nx.spring_layout,
+        "circular": nx.circular_layout,
+        "kamada_kawai": nx.kamada_kawai_layout,
+        "planar": nx.planar_layout
+    }[layout](G)
+
+    # Draw nodes, edges, and labels
+    nx.draw_networkx_nodes(G, pos, node_size=node_size)
+    nx.draw_networkx_edges(G, pos, alpha=0.5)
+    nx.draw_networkx_labels(G, pos, font_size=font_size, font_family="sans-serif")
+
+    plt.axis("off")  # Turn off axis
+    plt.show()       # Display the plot
+
+
+
+# Example usage:
+file_path = 'data'  # Replace with your file path # Replace data with actual file path - DJY edit
+visualize_edges_file(file_path, layout="kamada_kawai") 

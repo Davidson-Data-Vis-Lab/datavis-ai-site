@@ -1,0 +1,50 @@
+import pandas as pd
+
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+
+# Read the CSV file into a DataFrame
+df = pd.read_csv('data') # Replace data with actual file path - DJY edit
+
+# Display the first 5 rows
+print(df.head().to_markdown(index=False, numalign="left", stralign="left"))
+
+# Print the column names and their data types
+print(df.info())
+
+import altair as alt
+
+# Create a figure with 4 subplots (2 rows, 2 columns) sharing a y-axis
+fig = alt.vconcat(
+    alt.hconcat(
+        # Histogram for `area`
+        alt.Chart(df).mark_bar().encode(
+            x=alt.X('area:Q', bin=True, title='Area'),
+            y=alt.Y('count()', title='Count'),
+            tooltip=[alt.Tooltip('area:Q', bin=True), 'count()']
+        ).properties(title='Histogram of Area'),
+        # Histogram for `bedrooms`
+        alt.Chart(df).mark_bar().encode(
+            x=alt.X('bedrooms:Q', bin=True, title='Bedrooms'),
+            y=alt.Y('count()', title='Count'),
+            tooltip=[alt.Tooltip('bedrooms:Q', bin=True), 'count()']
+        ).properties(title='Histogram of Bedrooms')
+    ),
+    alt.hconcat(
+        # Histogram for `bathrooms`
+        alt.Chart(df).mark_bar().encode(
+            x=alt.X('bathrooms:Q', bin=True, title='Bathrooms'),
+            y=alt.Y('count()', title='Count'),
+            tooltip=[alt.Tooltip('bathrooms:Q', bin=True), 'count()']
+        ).properties(title='Histogram of Bathrooms'),
+        # Bar chart for `stories`
+        alt.Chart(df).mark_bar().encode(
+            x=alt.X('stories:N', title='Stories'),
+            y=alt.Y('count()', title='Count'),
+            tooltip=['stories', 'count()']
+        ).properties(title='Bar Chart of Stories')
+    )
+)
+
+# Display all plots
+fig.show() # Changed to .show() - DJY

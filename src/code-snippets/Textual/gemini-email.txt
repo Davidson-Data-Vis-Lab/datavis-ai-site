@@ -1,0 +1,31 @@
+import pandas as pd
+
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+
+# Read the CSV file into a DataFrame
+df = pd.read_csv('/Users/dayoder/Documents/to-upload/textual/enron-email/e-small.csv')
+
+# Display the first 5 rows
+print(df.head().to_markdown(index=False, numalign="left", stralign="left"))
+
+# Print the column names and their data types
+print(df.info())
+
+import altair as alt
+
+# Calculate the count of occurrences of each value in `file` and store it in `file_counts`
+file_counts = df['file'].value_counts().reset_index()
+file_counts.columns = ['file', 'counts']
+
+# Sort `file_counts` in descending order
+file_counts = file_counts.sort_values(by='counts', ascending=False)
+
+# Create and display a bar plot of the top 10 values in `file_counts`
+chart = alt.Chart(file_counts.head(10), title='Top 10 Files by Number of Emails').mark_bar().encode(
+    x=alt.X('file:N', axis=alt.Axis(title='File')),
+    y=alt.Y('counts:Q', axis=alt.Axis(title='Number of Emails')),
+    tooltip=['file', 'counts']
+).interactive()
+
+chart.show() 

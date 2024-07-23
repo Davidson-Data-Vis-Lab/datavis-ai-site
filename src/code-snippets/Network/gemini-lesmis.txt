@@ -1,0 +1,33 @@
+import networkx as nx
+import matplotlib.pyplot as plt
+import json
+
+def visualize_network(json_file):
+    """Visualizes a network from a JSON file."""
+
+    with open(json_file, 'r') as f:
+        data = json.load(f)
+
+    # Create a NetworkX graph
+    G = nx.Graph()
+
+    # Identify the correct node identifier key (replace 'node_id' if needed)
+    node_id_key = 'name'  # or 'label' or another relevant key in your JSON
+
+    # Assuming your JSON has 'nodes' and 'links' keys
+    for node in data['nodes']:
+        G.add_node(node[node_id_key])  
+
+    for link in data['links']:
+        G.add_edge(link['source'], link['target']) 
+
+    # Draw the graph (rest of the code is the same)
+    pos = nx.spring_layout(G)  
+    nx.draw(G, pos, with_labels=True, node_color='skyblue', node_size=500, font_size=10)
+    nx.draw_networkx_edge_labels(G, pos, font_size=8)
+    plt.show()
+
+
+# Example Usage
+json_file_path = 'data' # Replace data with actual file path - DJY edit
+visualize_network(json_file_path)

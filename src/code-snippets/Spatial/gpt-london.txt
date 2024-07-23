@@ -1,0 +1,67 @@
+import json
+import matplotlib.pyplot as plt
+from shapely.geometry import shape, Polygon, MultiPolygon
+
+# Load the JSON file
+file_path = 'data'  # Replace with the actual path to your file # Replace data with actual file path - DJY edit
+with open(file_path) as f:
+    data = json.load(f)
+
+# Extract geometries and borough names
+geometries = data['objects']['boroughs']['geometries']
+arcs = data['arcs']
+scale = data['transform']['scale']
+translate = data['transform']['translate']
+
+# Function to decode arcs into coordinates
+def decode_arcs(arcs, scale, translate):
+    coords = []
+    x, y = 0, 0
+    for arc in arcs:
+        arc_coords = []
+        for dx, dy in arc:
+            x += dx
+            y += dy
+            arc_coords.append((x * scale[0] + translate[0], y * scale[1] + translate[1]))
+        coords.append(arc_coords)
+    return coords
+
+# Decode the arcs into coordinates
+decoded_arcs = decode_arcs(arcs, scale, translate)
+
+# Helper function to flatten a list of lists
+def flatten(lst):
+    return [item for sublist in lst for item in sublist]
+
+# Create polygons from the decoded coordinates
+boroughs = {}
+for geometry in geometries:
+    if geometry['type'] == 'Polygon':
+        coords = [decoded_arcs[arc] for arc in flatten(geometry['arcs'])]
+        if len(coords[0]) >= 3:
+            boroughs[geometry['id']] = Polygon(coords[0])
+    elif geometry['type'] == 'MultiPolygon':
+        coords = [[decoded_arcs[arc] for arc in flatten(part)] for part in geometry['arcs']]
+        polygons = [Polygon(part[0]) for part in coords if len(part[0]) >= 3]
+        if polygons:
+            boroughs[geometry['id']] = MultiPolygon(polygons)
+
+# Convert boroughs dictionary to a list of tuples for plotting
+boroughs_data = [(borough, geom) for borough, geom in boroughs.items()]
+
+# Function to plot the boroughs
+def plot_boroughs(boroughs_data):
+    fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+    for borough_name, geom in boroughs_data:
+        if isinstance(geom, Polygon):
+            x, y = geom.exterior.xy
+            ax.plot(x, y, color='black')
+        elif isinstance(geom, MultiPolygon):
+            for poly in geom.geoms:
+                x, y = poly.exterior.xy
+                ax.plot(x, y, color='black')
+    ax.set_title('Boroughs of London')
+    plt.show()
+
+# Plot the boroughs
+plot_boroughs(boroughs_data)

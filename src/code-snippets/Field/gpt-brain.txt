@@ -1,0 +1,24 @@
+import pandas as pd
+
+# Load the data
+file_path = 'data' # Replace data with actual file path - DJY edit
+data = pd.read_csv(file_path, sep=' ', header=None, names=['Index', 'Value1', 'Value2', 'Value3', 'Area', 'Type'])
+
+data.head()
+
+import matplotlib.pyplot as plt
+
+# Clean the data by removing the incorrect first row
+data = data[1:]
+
+# Convert numerical columns to appropriate data types
+data[['Index', 'Value1', 'Value2', 'Value3']] = data[['Index', 'Value1', 'Value2', 'Value3']].apply(pd.to_numeric)
+
+# Generate a scatter plot of Value1 vs Value2 colored by Area
+plt.figure(figsize=(12, 8))
+scatter = plt.scatter(data['Value1'], data['Value2'], c=pd.factorize(data['Area'])[0], cmap='viridis', alpha=0.6)
+plt.colorbar(scatter, ticks=range(len(data['Area'].unique())), label='Area')
+plt.xlabel('Value1')
+plt.ylabel('Value2')
+plt.title('Scatter Plot of Value1 vs Value2 Colored by Area')
+plt.show()

@@ -1,0 +1,27 @@
+import osmnx as ox
+import folium
+
+# Load the OSM data
+osm_file = "data" # Replace with your actual filename # Replace data with actual file path - DJY edit
+graph = ox.graph_from_xml(osm_file)
+
+# Extract nodes from the graph
+nodes = ox.graph_to_gdfs(graph, edges=False)
+
+if len(nodes) > 0:  # Check if nodes are found
+    center = {'y': nodes['y'].mean(), 'x': nodes['x'].mean()}
+else:
+    print("Warning: No nodes found in OSM file. Using default coordinates.")
+    center = {'y': 40.7128, 'x': -74.0060}
+
+# Create the Folium map
+m = folium.Map(location=[center['y'], center['x']], zoom_start=13)
+# Add the OSM streets as a layer
+folium.GeoJson(
+    ox.graph_to_gdfs(graph, nodes=False)['geometry'],
+    name='Streets',
+    style_function=lambda x: {'color': 'blue', 'weight': 2}
+).add_to(m)
+
+# Save the map as an HTML file
+m.save('osm_map.html')

@@ -1,0 +1,48 @@
+import os
+import open3d as o3d
+import numpy as np
+
+def read_camera_config(config_file):
+    try:
+        with open(config_file, 'r') as f:
+            line = f.readline().strip()
+            if line.startswith('camera'):
+                params = list(map(float, line.split()[1:]))
+                return params
+    except Exception as e:
+        print(f"Error reading config file: {e}")
+    return None
+
+def visualize_ply_file(file_path, camera_params=None):
+    try:
+        # Read the point cloud
+        pcd = o3d.io.read_point_cloud(file_path)
+        
+        # Visualize the point cloud
+        o3d.visualization.draw_geometries([pcd])
+
+    except Exception as e:
+        print(f"Error visualizing {file_path}: {e}")
+
+def process_folder(folder_path, config_file):
+    camera_params = read_camera_config(config_file) if config_file else None
+    
+    # Get all .ply files in the folder
+    ply_files = [f for f in os.listdir(folder_path) if f.endswith('.ply')]
+
+    for ply_file in ply_files:
+        file_path = os.path.join(folder_path, ply_file)
+        print(f"Visualizing {ply_file}...")
+        visualize_ply_file(file_path, camera_params)
+
+if __name__ == "__main__":
+    folder_path = "data" # Replace data with actual file path - DJY edit
+    config_file = os.path.join(folder_path, "bun.conf")
+
+    if not os.path.exists(folder_path):
+        print(f"Error: Folder '{folder_path}' does not exist.")
+    elif not os.path.exists(config_file):
+        print(f"Warning: Config file '{config_file}' not found. Proceeding without camera configuration.")
+        config_file = None
+    
+    process_folder(folder_path, config_file)

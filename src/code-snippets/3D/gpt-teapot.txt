@@ -1,0 +1,36 @@
+import re
+
+# Read the file
+file_path = 'data' # Replace data with actual file path - DJY edit
+with open(file_path, 'r') as file:
+    data = file.read()
+
+# Regular expression to match the control points
+pattern = re.compile(r'pt\(\s*(-?\d+\.\d+),\s*(-?\d+\.\d+),\s*(-?\d+\.\d+)\s*\)')
+
+# Find all control points
+points = pattern.findall(data)
+
+# Convert the points to a list of tuples
+control_points = [(float(x), float(y), float(z)) for x, y, z in points]
+
+# Extracting x, y, z coordinates
+x_coords = [p[0] for p in control_points]
+y_coords = [p[1] for p in control_points]
+z_coords = [p[2] for p in control_points]
+
+# Creating a 3D plot
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+ax.scatter(x_coords, y_coords, z_coords, c='b', marker='o')
+
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_zlabel('Z')
+
+plt.title('Control Points of the Utah Teapot')
+plt.show()

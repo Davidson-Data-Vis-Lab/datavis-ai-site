@@ -1,0 +1,61 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+from collections import Counter
+import re
+
+# Function to clean and process the text
+def clean_text(text):
+    text = re.sub(r'\n', ' ', text)
+    text = re.sub(r'[^a-zA-Z\s]', '', text)
+    text = text.lower()
+    return text
+
+# Function to identify themes based on keywords
+def identify_themes(text, themes_keywords):
+    themes = {theme: 0 for theme in themes_keywords.keys()}
+    words = text.split()
+    for word in words:
+        for theme, keywords in themes_keywords.items():
+            if word in keywords:
+                themes[theme] += 1
+    return themes
+
+# Load the text files
+files = {
+    "Federalist No. 51": "data",
+    "Federalist No. 78": "data", # Replace data with actual file path - DJY edit
+    "Federalist No. 10": "data"
+}
+
+# Define themes and corresponding keywords
+themes_keywords = {
+    "Government Structure": ["government", "departments", "constitution", "republic", "federal"],
+    "Checks and Balances": ["checks", "balances", "control", "power", "authority"],
+    "Judiciary": ["judiciary", "court", "justice", "judge", "law"],
+    "Faction and Liberty": ["faction", "liberty", "freedom", "rights", "interests"]
+}
+
+# Process each file and identify themes
+themes_distribution = {file_name: {} for file_name in files.keys()}
+for file_name, file_path in files.items():
+    with open(file_path, 'r') as file:
+        text = clean_text(file.read())
+        themes = identify_themes(text, themes_keywords)
+        themes_distribution[file_name] = themes
+
+# Convert to DataFrame for visualization
+df_themes = pd.DataFrame(themes_distribution).T
+df_themes_percentage = df_themes.div(df_themes.sum(axis=1), axis=0) * 100
+
+df_themes_percentage.plot(kind='bar', stacked=True, figsize=(12, 8))
+plt.title('Distribution of Key Themes in Federalist Papers')
+plt.xlabel('Federalist Paper')
+plt.ylabel('Percentage of Themes')
+plt.legend(title='Themes')
+plt.tight_layout()
+
+# Save the plot
+#plt.savefig('/Users/dayoder/Documents/gpt-7-1/fed-papers')
+plt.show()
+
+df_themes_percentage

@@ -1,0 +1,33 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Read the Excel file
+df = pd.read_excel('data') # Replace data with actual file path - DJY edit
+
+# Get the first two columns
+column1 = df.iloc[:, 0]
+column2 = df.iloc[:, 1]
+
+# Convert the first column to string (for categories)
+categories = column1.astype(str)
+
+# Ensure the second column is numeric
+values = pd.to_numeric(column2, errors='coerce')
+
+# Remove any rows where the value is NaN
+valid_data = pd.DataFrame({'categories': categories, 'values': values}).dropna()
+
+# Create a bar chart
+plt.figure(figsize=(10, 6))
+plt.bar(valid_data['categories'], valid_data['values'])
+plt.title('Data Visualization from Excel File')
+plt.xlabel('Categories')
+plt.ylabel('Values')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+
+# Show the plot
+plt.show()
+
+# Optionally, save the plot as an image
+# plt.savefig('excel_visualization.png')

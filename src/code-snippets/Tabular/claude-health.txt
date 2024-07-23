@@ -1,0 +1,98 @@
+import React, { useState, useEffect } from 'react';
+import { ScatterChart, Scatter, XAxis, YAxis, ZAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+
+// Simple CSV parser function
+const parseCSV = (csv) => {
+  const lines = csv.split('\n');
+  const headers = lines[0].split(',');
+  return lines.slice(1).map(line => {
+    const values = line.split(',');
+    return headers.reduce((obj, header, index) => {
+      obj[header] = values[index];
+      return obj;
+    }, {});
+  });
+};
+
+const colors = {
+  south_asia: "#FF5733",
+  europe_central_asia: "#33FF57",
+  middle_east_north_africa: "#3357FF",
+  sub_saharan_africa: "#FF33F1",
+  america: "#33FFF1",
+  east_asia_pacific: "#F1FF33"
+};
+
+const CustomTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    const data = payload[0].payload;
+    return (
+      <div className="bg-white border border-gray-300 p-2 shadow-md">
+        <p className="font-bold">{data.country}</p>
+        <p>Income: ${parseInt(data.income).toLocaleString()}</p>
+        <p>Life Expectancy: {data.health} years</p>
+        <p>Population: {parseInt(data.population).toLocaleString()}</p>
+        <p>Region: {data.region.replace(/_/g, ' ')}</p>
+      </div>
+    );
+  }
+  return null;
+};
+
+const IncomeHealthScatterplot = () => {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    // In a real-world scenario, we'd use fetch() to get the file
+    // For this example, we'll simulate fetching the file content
+    const csvContent = `country,income,health,population,region
+Afghanistan,1925,57.63,32526562,south_asia
+Albania,10620,76,2896679,europe_central_asia
+Algeria,13434,76.5,39666519,middle_east_north_africa
+Andorra,46577,84.1,70473,europe_central_asia
+Angola,7615,61,25021974,sub_saharan_africa
+...`; // Add the rest of the CSV content here
+
+    const parsedData = parseCSV(csvContent);
+    setData(parsedData);
+  }, []);
+
+  return (
+    <ResponsiveContainer width="100%" height={400}>
+      <ScatterChart margin={{ top: 20, right: 20, bottom: 20, left: 60 }}>
+        <XAxis 
+          type="number" 
+          dataKey="income" 
+          name="Income" 
+          unit="$" 
+          domain={['dataMin', 'dataMax']}
+        />
+        <YAxis 
+          type="number" 
+          dataKey="health" 
+          name="Life Expectancy" 
+          unit=" years"
+          domain={['dataMin', 'dataMax']}
+        />
+        <ZAxis 
+          type="number" 
+          dataKey="population" 
+          range={[10, 1000]} 
+          name="Population" 
+        />
+        <Tooltip content={<CustomTooltip />} />
+        <Legend />
+        {Object.entries(colors).map(([region, color]) => (
+          <Scatter
+            key={region}
+            name={region.replace(/_/g, ' ')}
+            data={data.filter(item => item.region === region)}
+            fill={color}
+          />
+        ))}
+      </ScatterChart>
+    </ResponsiveContainer>
+  );
+};
+
+export default IncomeHealthScatterplot;

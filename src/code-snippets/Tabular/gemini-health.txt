@@ -1,0 +1,37 @@
+import pandas as pd
+
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+
+# Read the CSV file into a DataFrame
+df = pd.read_csv('data') # Replace data with actual file path - DJY edit
+
+# Display the first 5 rows
+print(df.head().to_markdown(index=False, numalign="left", stralign="left"))
+
+# Print the column names and their data types
+print(df.info())
+
+import altair as alt
+
+# Create a figure with 3 subplots (1 row, 3 columns) sharing a y-axis
+fig = alt.vconcat()
+
+# Create a scatter plot for each numeric column
+for y_col in ['income', 'health', 'population']:
+  chart = alt.Chart(df).mark_circle().encode(
+      x='region:N',
+      y=y_col,
+      tooltip = ['region', y_col]
+  ).properties(
+      title=y_col
+  ).interactive()
+  fig &= chart
+
+# Add a label to the shared y-axis
+fig = fig.resolve_scale(
+    y = 'shared'
+)
+
+# Display the plots
+fig.show() # Changed to .show() - DJY

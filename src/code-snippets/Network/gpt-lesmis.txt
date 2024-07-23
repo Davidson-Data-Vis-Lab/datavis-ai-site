@@ -1,0 +1,33 @@
+import json
+import networkx as nx
+import matplotlib.pyplot as plt
+
+# Load data
+with open('data') as f: # Replace data with actual file path - DJY edit
+    data = json.load(f)
+
+# Create the graph
+G = nx.Graph()
+
+# Add nodes
+for node in data['nodes']:
+    G.add_node(node['name'], group=node['group'])
+
+# Add edges
+for link in data['links']:
+    G.add_edge(data['nodes'][link['source']]['name'], data['nodes'][link['target']]['name'], weight=link['value'])
+
+# Draw the graph
+pos = nx.spring_layout(G, seed=42)  # for consistent layout
+plt.figure(figsize=(12, 12))
+
+# Draw nodes with colors based on their group
+groups = set(nx.get_node_attributes(G, 'group').values())
+colors = [plt.cm.jet(i / len(groups)) for i in range(len(groups))]
+node_color = [colors[list(groups).index(G.nodes[n]['group'])] for n in G.nodes]
+
+nx.draw(G, pos, node_size=500, node_color=node_color, with_labels=True, font_size=8)
+nx.draw_networkx_edges(G, pos, width=1.0, alpha=0.5)
+
+plt.title('Network Graph Visualization')
+plt.show()
