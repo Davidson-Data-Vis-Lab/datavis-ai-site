@@ -41,38 +41,39 @@ const App = () => {
       {isOpen && (
         <Overlay onClose={closeInitialOverlay}>
           <div className="initial-overlay">
-  <div className="overlay-content">
-    <h1>Dataset Suite: AI-Generated Visualizations</h1>
-    <h2>David Yoder & Dr. Katy Williams, Davidson College</h2>
-    
-    <div className="scrollable-content">
-      <section>
-        <h3>Our Research</h3>
-        <p>Exploring how Claude, Gemini, and ChatGPT create data visualizations across a variety dataset types.</p>
-      </section>
-      
-      <section>
-        <h3>Study Overview</h3>
-        <p>18 datasets across 6 categories: 3D, Field, Network, Spatial, Tabular, and Textual. Assessing AI capabilities in generating visualizations with minimal guidance.</p>
-      </section>
-      
-      <section>
-        <h3>Information</h3>
-        <p>Placeholder</p>
-      </section>
-      
-    </div>
-    
-    <button className="start-exploring" onClick={closeInitialOverlay}>
-      Explore the Dataset Suite
-    </button>
-  </div>
-</div>
+            <div className="overlay-content">
+              <button className="close-button" onClick={closeInitialOverlay}>&times;</button>
+              <h1>Dataset Suite: AI-Generated Visualizations</h1>
+              <h2>David Yoder & Dr. Katy Williams, Davidson College</h2>
+              
+              <div className="scrollable-content">
+                <section>
+                  <h3>Our Research</h3>
+                  <p>Exploring how Claude, Gemini, and ChatGPT create data visualizations across a variety dataset types.</p>
+                </section>
+                
+                <section>
+                  <h3>Study Overview</h3>
+                  <p>18 datasets across 6 categories: 3D, Field, Network, Spatial, Tabular, and Textual. Assessing AI capabilities in generating visualizations with minimal guidance.</p>
+                </section>
+                
+                <section>
+                  <h3>Information</h3>
+                  <p>Placeholder</p>
+                </section>
+              </div>
+              
+              <button className="start-exploring" onClick={closeInitialOverlay}>
+                Explore the Dataset Suite
+              </button>
+            </div>
+          </div>
         </Overlay>
       )}
       {isModalOpen && modalContent && (
         <Overlay onClose={closeModal}>
           <div className="modal-content">
+            <button className="close-button" onClick={closeModal}>&times;</button>
             <h2 className="modal-title">{modalContent.title}</h2>
             <div className="modal-body">
               <div className="image-container" onClick={() => openFullScreenMedia(modalContent.src, modalContent.alt, modalContent.type)}>
@@ -84,9 +85,18 @@ const App = () => {
                   </video>
                 )}
               </div>
-              <div className="text-container">
+              <div className={`text-container ${modalContent.borderStyle && modalContent.borderStyle.border && modalContent.borderStyle.border.includes('orange') ? 'orange-border' : ''}`}>
+                {modalContent.warningMessage && (
+                  <div className={`code-warning ${modalContent.borderStyle && modalContent.borderStyle.border && modalContent.borderStyle.border.includes('orange') ? 'orange' : 'red'}`}>
+                    {modalContent.warningMessage}
+                  </div>
+                )}
                 <h3>Code</h3>
-                <SyntaxHighlighter language="javascript" style={vscDarkPlus}>
+                <SyntaxHighlighter 
+                  language="javascript" 
+                  style={vscDarkPlus}
+                  className={modalContent.borderStyle && modalContent.borderStyle.border && modalContent.borderStyle.border.includes('red') ? 'red-border' : ''}
+                >
                   {modalContent.code}
                 </SyntaxHighlighter>
               </div>

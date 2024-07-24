@@ -437,3 +437,36 @@ body, html {
     font-size: 1.1rem;
   }
 }
+
+
+
+.overlay-warning.orange {
+  background-color: rgba(255, 165, 0, 0.7);
+}
+
+.overlay-warning.red {
+  background-color: rgba(255, 0, 0, 0.7);
+}
+
+.text-container.orange-border {
+  border: 2px solid orange;
+  padding: 10px;
+}
+
+.red-border {
+  border: 2px solid red;
+}
+
+.code-warning {
+  margin-top: 10px;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.code-warning.orange {
+  color: orange;
+}
+
+.code-warning.red {
+  color: red;
+}
