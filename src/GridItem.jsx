@@ -88,7 +88,8 @@ const getBorderStyle = (datasetType, aiType, index) => {
   if (
     (datasetType === 'Tabular' && aiType === 'Claude' && index === 2) ||
     (datasetType === 'Tabular' && aiType === 'Claude' && index === 1) ||
-    (datasetType === 'Textual' && aiType === 'Claude' && index === 1)
+    (datasetType === 'Textual' && aiType === 'Claude' && index === 1) ||
+    (datasetType === 'Network' && aiType === 'Claude' && index === 2)
   ) {
     return { border: '4px solid orange' };
   }
@@ -152,11 +153,33 @@ const GridItem = ({ datasetType, aiType, index, openModal, className }) => {
       alt: altText, 
       type: contentType, 
       title,
-      code 
+      code,
+      borderStyle,
+      warningMessage: getWarningMessage(datasetType, aiType, index)
     });
   };
 
   const isVideo = imagePath.toLowerCase().endsWith('.mov') || imagePath.toLowerCase().endsWith('.mp4');
+
+  const getWarningMessage = (datasetType, aiType, index) => {
+    if (
+      (datasetType === 'Textual' && aiType === 'Claude' && (index === 0 || index === 2)) ||
+      (datasetType === 'Spatial' && aiType === 'Gemini' && (index === 0 || index === 2)) ||
+      (datasetType === 'Field' && aiType === 'Claude' && index === 0) ||
+      (datasetType === 'Textual' && aiType === 'Gemini' && index === 1)
+    ) {
+      return "Model was unable to generate visualization";
+    } else if (
+      (datasetType === 'Tabular' && aiType === 'Claude' && (index === 1 || index === 2)) ||
+      (datasetType === 'Textual' && aiType === 'Claude' && index === 1)
+    ) {
+      return "Visualization only works with truncated versions of the data";
+    } else if (datasetType === 'Network' && aiType === 'Claude' && index === 2) {
+      return "Code was provided but couldn't be displayed";
+    }
+    return null;
+  };
+
 
   return (
     <div className={`grid-item ${className}`} onClick={handleOpen} style={borderStyle}>
