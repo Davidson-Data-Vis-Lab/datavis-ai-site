@@ -18,7 +18,7 @@ export const chatLogLinkEndings = {
     },
     'Spatial': { 
         'Claude': ['6551b88f2ca6dc9a597', '658506213614923feef', '65a648f4bffa780d2e7'],
-        'Gemini': ['757506213614923ff97', '75b45182928d890faa9', '757506213614923ff97'],
+        'Gemini': ['757124353a0bac9a004', '75b45182928d890faa9', '757124353a0bac9a004'],
         'GPT': ['6f437c7a1fc0ac9a96c', '6f9e29e0dc78d24037b', '6fa648f4bffa780d3a8']
     },
     'Field': {
