@@ -49,17 +49,18 @@ const App = () => {
               <div className="scrollable-content">
                 <section>
                   <h3>Our Research</h3>
-                  <p>Exploring how Claude, Gemini, and ChatGPT create data visualizations across a variety dataset types.</p>
+                  <p>Exploring how Claude, Gemini, and ChatGPT create data visualizations across a variety of dataset types.</p>
                 </section>
                 
                 <section>
                   <h3>Study Overview</h3>
-                  <p>18 datasets across 6 categories: 3D, Field, Network, Spatial, Tabular, and Textual. Assessing AI capabilities in generating visualizations with minimal guidance.</p>
+                  <p>We use a test suite of 18 datasets across 6 dataset type: 3D, Field, Network, Spatial, Tabular, and Textual. We tested 3 datasets for each of the 6 dataset types. We chose to assess the AI capabilities in generating visualizations with minimal guidance. Our prompting typically involved uploading the unnamed dataset and asking, "Can you generate a visualization for this dataset?"
+                  </p>
                 </section>
                 
                 <section>
-                  <h3>Information</h3>
-                  <p>Placeholder</p>
+                  <h3>Publication</h3>
+                  <p>Forthcoming.</p>
                 </section>
               </div>
               
@@ -70,11 +71,20 @@ const App = () => {
           </div>
         </Overlay>
       )}
-      {isModalOpen && modalContent && (
+     {isModalOpen && modalContent && (
         <Overlay onClose={closeModal}>
           <div className="modal-content">
             <button className="close-button" onClick={closeModal}>&times;</button>
-            <h2 className="modal-title">{modalContent.title}</h2>
+            <div className="modal-header">
+              <h2 className="modal-title">{modalContent.title}</h2>
+              {modalContent.chatLogLink && (
+                <div className="chat-log-link">
+                  <a href={modalContent.chatLogLink} target="_blank" rel="noopener noreferrer">
+                    View Chat Log
+                  </a>
+                </div>
+              )}
+            </div>
             <div className="modal-body">
               <div className="image-container" onClick={() => openFullScreenMedia(modalContent.src, modalContent.alt, modalContent.type)}>
                 {modalContent.type === 'image' ? (

@@ -470,3 +470,35 @@ body, html {
 .code-warning.red {
   color: red;
 }
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #f0f0f0;
+}
+
+.modal-title {
+  margin: 0;
+  color: #333;
+  font-size: 24px;
+}
+
+.chat-log-link {
+  margin-left: 20px;
+}
+
+.chat-log-link a {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #145A95;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.chat-log-link a:hover {
+  background-color: #14935D;
+}

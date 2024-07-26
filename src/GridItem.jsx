@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import './index.css';
+import { baseUrl, chatLogLinkEndings } from './chatLogLinks';
 
 const getImagePath = (datasetType, aiType, index) => {
   const paths = {
@@ -106,10 +107,15 @@ const getItemDetails = (datasetType, aiType, index) => {
     'Textual': ['Email Classification', 'Federalist Papers', 'IMDB Movie Reviews'],
   };
 
+  const chatLogLink = `${baseUrl}${chatLogLinkEndings[datasetType][aiType][index]}`;
+
   return {
     title: `${titles[datasetType][index]} (${aiType})`,
+    chatLogLink: chatLogLink,
   };
 };
+
+
 
 const codeFiles = import.meta.glob('/src/code-snippets/**/*.txt', { as: 'raw' });
 
@@ -119,7 +125,7 @@ const GridItem = ({ datasetType, aiType, index, openModal, className }) => {
   const mediaPath = getMediaPath(datasetType, aiType, index);
   const altText = `${datasetType} - ${aiType} ${index + 1}`;
   const borderStyle = getBorderStyle(datasetType, aiType, index);
-  const { title } = getItemDetails(datasetType, aiType, index);
+  const { title, chatLogLink } = getItemDetails(datasetType, aiType, index);
 
   useEffect(() => {
     const itemNames = {
@@ -155,7 +161,8 @@ const GridItem = ({ datasetType, aiType, index, openModal, className }) => {
       title,
       code,
       borderStyle,
-      warningMessage: getWarningMessage(datasetType, aiType, index)
+      warningMessage: getWarningMessage(datasetType, aiType, index),
+      chatLogLink: chatLogLink  
     });
   };
 
